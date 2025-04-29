@@ -22,7 +22,7 @@ public class OtpSettingsController {
 
     @PostMapping("/settings")
     @PreAuthorize("hasRole('ADMIN')")
-    public OtpSettingsEntity postMethodName(@RequestBody @Valid OtpSettingsRequest settings) {
+    public OtpSettingsEntity setOtpSettings(@RequestBody @Valid OtpSettingsRequest settings) {
         return service.create(
                 OtpSettingsEntity.builder()
                 .liveTime(settings.getLiveTime())

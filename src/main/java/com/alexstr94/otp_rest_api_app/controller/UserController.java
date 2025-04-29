@@ -33,7 +33,7 @@ public class UserController {
      */
     @GetMapping("")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<UserDto> postMethodName() {
+    public List<UserDto> getUsers() {
         List<UserEntity> userEntities = userService.getUsers();
         return userEntities.stream()
                 .map(user -> UserDto.builder()
