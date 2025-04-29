@@ -3,6 +3,7 @@ package com.alexstr94.otp_rest_api_app.service;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Example;
@@ -61,12 +62,10 @@ public class UserService {
 
     }
 
-
-
     /**
      * Получение пользователя с ролью админ
      * 
-     * @return
+     * @return админ
      */
     public Optional<UserEntity> getAdmin() {
         UserEntity admin = new UserEntity();
@@ -76,7 +75,19 @@ public class UserService {
     }
 
     /**
-     * Получение пользователя по имени пользователя
+     * Получение всех пользователей, кроме админа.
+     * 
+     * @return Пользователи.
+     */
+    public List<UserEntity> getUsers() {
+        UserEntity user = new UserEntity();
+        user.setRole(Role.ROLE_USER);
+        Example<UserEntity> example = Example.of(user);
+        return repository.findAll(example);
+    }
+
+    /**
+     * Получение пользователя по имени пользователя.
      * <p>
      * Нужен для Spring Security
      *
