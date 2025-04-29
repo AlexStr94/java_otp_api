@@ -17,7 +17,6 @@ import com.alexstr94.otp_rest_api_app.entity.UserEntity.Role;
 import com.alexstr94.otp_rest_api_app.exception.ApiException;
 import com.alexstr94.otp_rest_api_app.repository.UserRepository;
 
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -31,7 +30,6 @@ public class UserService {
     public UserEntity save(UserEntity user) {
         return repository.save(user);
     }
-
 
     /**
      * Создание пользователя
@@ -84,6 +82,23 @@ public class UserService {
         user.setRole(Role.ROLE_USER);
         Example<UserEntity> example = Example.of(user);
         return repository.findAll(example);
+    }
+
+    /**
+     * Удаление пользователя по id.
+     * 
+     * @param id
+     * @return
+     */
+    public boolean deleteUser(Long id) {
+        Optional<UserEntity> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            repository.delete(userOptional.get());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
