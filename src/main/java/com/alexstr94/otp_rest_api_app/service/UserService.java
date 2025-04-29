@@ -1,12 +1,16 @@
 package com.alexstr94.otp_rest_api_app.service;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.Collections;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.alexstr94.otp_rest_api_app.entity.UserEntity;
+import com.alexstr94.otp_rest_api_app.exception.ApiException;
 import com.alexstr94.otp_rest_api_app.repository.UserRepository;
 
 
@@ -33,11 +37,11 @@ public class UserService {
     public UserEntity create(UserEntity user) {
         if (repository.existsByUsername(user.getUsername())) {
             // Заменить на свои исключения
-            throw new RuntimeException("Пользователь с таким именем уже существует");
+            throw new ApiException(Collections.singletonMap("username", "Пользователь с таким именем уже существует"));
         }
 
         if (repository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Пользователь с таким email уже существует");
+            throw new ApiException(Collections.singletonMap("email", "Пользователь с таким email уже существует"));
         }
 
         return save(user);
