@@ -3,13 +3,16 @@ package com.alexstr94.otp_rest_api_app.service;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collections;
+import java.util.Optional;
 
+import org.springframework.data.domain.Example;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.alexstr94.otp_rest_api_app.entity.UserEntity;
+import com.alexstr94.otp_rest_api_app.entity.UserEntity.Role;
 import com.alexstr94.otp_rest_api_app.exception.ApiException;
 import com.alexstr94.otp_rest_api_app.repository.UserRepository;
 
@@ -56,6 +59,20 @@ public class UserService {
         return repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
+    }
+
+
+
+    /**
+     * Получение пользователя с ролью админ
+     * 
+     * @return
+     */
+    public Optional<UserEntity> getAdmin() {
+        UserEntity admin = new UserEntity();
+        admin.setRole(Role.ROLE_ADMIN);
+        Example<UserEntity> example = Example.of(admin);
+        return repository.findOne(example);
     }
 
     /**

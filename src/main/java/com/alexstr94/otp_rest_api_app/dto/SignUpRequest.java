@@ -23,4 +23,6 @@ public class SignUpRequest {
 
     @Size(max = 255, message = "Длина пароля должна быть не более 255 символов")
     private String password;
+
+    private String role;
 }

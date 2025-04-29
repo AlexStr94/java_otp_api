@@ -28,12 +28,17 @@ public class AuthenticationService {
      * @return токен
      */
     public JwtAuthenticationResponse signUp(SignUpRequest request) {
+        // Создание пользователя с ролью админ, если роль передана в запросе и админа еще не существует.
+        var role = Role.ROLE_USER;
+        if (request.getRole().equals("ADMIN") && userService.getAdmin().isEmpty()) {
+            role = Role.ROLE_ADMIN;
+        }
 
         var user = UserEntity.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.ROLE_USER)
+                .role(role)
                 .build();
 
         userService.create(user);
