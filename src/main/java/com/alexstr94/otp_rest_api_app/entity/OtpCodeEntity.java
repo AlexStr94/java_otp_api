@@ -26,7 +26,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "otp_codes")
-public class OtpEntity {
+public class OtpCodeEntity {
     public enum Status {
         ACTIVE,
         EXPIRED,

@@ -45,7 +45,7 @@ public class UserEntity implements UserDetails {
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OtpEntity> otpCodes;
+    private List<OtpCodeEntity> otpCodes;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

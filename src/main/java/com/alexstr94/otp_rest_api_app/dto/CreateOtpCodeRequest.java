@@ -5,6 +5,6 @@ import java.util.UUID;
 import lombok.Data;
 
 @Data
-public class CreateOtp {
+public class CreateOtpCodeRequest {
     private UUID operationUUID;
 }
