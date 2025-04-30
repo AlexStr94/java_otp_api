@@ -1,13 +1,16 @@
 package com.alexstr94.otp_rest_api_app.service;
 
+import java.io.ByteArrayInputStream;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
@@ -83,6 +86,27 @@ public class OtpService {
             return CheckOtpCodeResponse.builder().status(status).build();
         }
         throw new ApiException(Collections.singletonMap("code", "Код для данной операции не найден."));
+    }
+
+    public InputStreamResource getUserCodes (UserEntity user) {
+        OtpCodeEntity otpCodeEntity = new OtpCodeEntity();
+        otpCodeEntity.setUser(user);
+        Example<OtpCodeEntity> example = Example.of(otpCodeEntity);
+        List<OtpCodeEntity> otpCodes = repository.findAll(example);
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID, Operation UUID, Code, Status, Create Date\n");
+
+        for (OtpCodeEntity otpCode : otpCodes) {
+            sb.append(otpCode.getId()).append(", ")
+              .append(otpCode.getOperationUuid()).append(", ")
+              .append(otpCode.getCode()).append(", ")
+              .append(otpCode.getStatus()).append(", ")
+              .append(otpCode.getCreateDateTime()).append("\n");
+        }
+
+        byte[] bytes = sb.toString().getBytes();
+
+        return new InputStreamResource(new ByteArrayInputStream(bytes));
     }
 
 }
