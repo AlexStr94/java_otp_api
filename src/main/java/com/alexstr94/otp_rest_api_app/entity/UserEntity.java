@@ -40,6 +40,12 @@ public class UserEntity implements UserDetails {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
+    @Column(name = "phone", nullable = true)
+    private String phone;
+
+    @Column(name = "telegram_id", nullable = true)
+    private String telegramId;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;

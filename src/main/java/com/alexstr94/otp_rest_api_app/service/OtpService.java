@@ -21,7 +21,7 @@ import com.alexstr94.otp_rest_api_app.entity.UserEntity;
 import com.alexstr94.otp_rest_api_app.entity.OtpCodeEntity.Status;
 import com.alexstr94.otp_rest_api_app.exception.ApiException;
 import com.alexstr94.otp_rest_api_app.repository.OtpRepository;
-
+import com.alexstr94.otp_rest_api_app.service.notification.NotificationService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +32,7 @@ public class OtpService {
     private final OtpSettingsService otpSettingsService;
     @Value("${otp-settings:default-live-time}")
     private String otpCodeLiveTimeDefault;
+    private final List<NotificationService> notificationServices;
 
     private boolean checkOtpCodeValid(OtpCodeEntity otpCodeEntity) {
         Optional<OtpSettingsEntity> otpSettings = otpSettingsService.getSettings();
@@ -66,6 +67,9 @@ public class OtpService {
             .build();
         
         repository.save(otpEntity);
+        for(var service : notificationServices) {
+            service.sendOtpCode(user, code.toString());
+        }
     }
 
     public CheckOtpCodeResponse checkOtpCode(String code, UUID operationUUID) {
